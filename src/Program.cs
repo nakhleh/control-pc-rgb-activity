@@ -8,7 +8,9 @@ namespace control_rgb_activity {
         static void Main(string[] args) {
             var activity = new ComputerActivity();
             activity.ListPrimaryHardware();
-            activity.ListAll();
+            //activity.ListAll();
+            var lights = new ComputerLights();
+            lights.PrintDeviceInfo();
             while (true) {
                 var stats = activity.GetActivity();
                 Console.WriteLine("CPU: {0}, GPU: {1}, RAM: {2}", stats["cpuLoad"], stats["gpuLoad"], stats["memUsed"]);

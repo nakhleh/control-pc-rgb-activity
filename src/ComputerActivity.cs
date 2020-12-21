@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading;
 using LibreHardwareMonitor.Hardware;
 
 namespace control_rgb_activity {
@@ -20,10 +19,10 @@ namespace control_rgb_activity {
     }
 
     public class ComputerActivity {
-        private Computer _computer;
+        private Computer computer;
 
         public ComputerActivity() {
-            this._computer = new Computer {
+            this.computer = new Computer {
                 IsCpuEnabled = true,
                 IsGpuEnabled = true,
                 IsMemoryEnabled = true,
@@ -35,10 +34,10 @@ namespace control_rgb_activity {
         }
 
         public Dictionary<string, float> GetActivity() {
-            this._computer.Open();
-            this._computer.Accept(new ComputerUpdateVisitor());
+            this.computer.Open();
+            this.computer.Accept(new ComputerUpdateVisitor());
             var stats = new Dictionary<string, float>();
-            foreach (IHardware hw in this._computer.Hardware) {
+            foreach (IHardware hw in this.computer.Hardware) {
                 if (hw.HardwareType == HardwareType.Cpu) {
                     stats.Add("cpuLoad", GetCpuLoad(hw));
                 }
@@ -49,27 +48,26 @@ namespace control_rgb_activity {
                     stats.Add("memUsed", GetMemoryUsed(hw));
                 }
             }
-            Console.WriteLine("CPU: {0}, GPU: {1}, RAM: {2}", stats["cpuLoad"], stats["gpuLoad"], stats["memUsed"]);
-            this._computer.Close();
+            this.computer.Close();
             return stats;
         }
 
         public void ListPrimaryHardware() {
-            this._computer.Open();
-            this._computer.Accept(new ComputerUpdateVisitor());
+            this.computer.Open();
+            this.computer.Accept(new ComputerUpdateVisitor());
             var hwlist = new List<string>();
-            foreach (IHardware hw in this._computer.Hardware) {
+            foreach (IHardware hw in this.computer.Hardware) {
                 hwlist.Add($"{hw.Name} ({hw.HardwareType})");
             }
             Console.WriteLine("Found {0} hardware items: {1}", 
                 hwlist.Count, String.Join(", ", hwlist));
-            this._computer.Close();
+            this.computer.Close();
         }
 
         public void ListAll() {
-            this._computer.Open();
-            this._computer.Accept(new ComputerUpdateVisitor());
-            foreach (IHardware hw in this._computer.Hardware) {
+            this.computer.Open();
+            this.computer.Accept(new ComputerUpdateVisitor());
+            foreach (IHardware hw in this.computer.Hardware) {
                 Console.WriteLine("Hardware: {0}", hw.Name);
                 foreach (IHardware shw in hw.SubHardware) {
                     Console.WriteLine("\tSubhardware: {0}", shw.Name);
@@ -81,7 +79,7 @@ namespace control_rgb_activity {
                     Console.WriteLine("\tSensor: {0} ({1}), value: {2}", sensor.Name, sensor.SensorType, sensor.Value);
                 }
             }
-            this._computer.Close();
+            this.computer.Close();
         }
 
         private float GetCpuLoad(IHardware cpu) {
