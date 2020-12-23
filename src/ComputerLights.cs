@@ -23,16 +23,22 @@ namespace control_rgb_activity {
         }
 
         private void LoadDevices() {
-            this.surface.LoadDevices(AsusDeviceProvider.Instance);
-            this.surface.LoadDevices(CoolerMasterDeviceProvider.Instance);
-            this.surface.LoadDevices(CorsairDeviceProvider.Instance);
-            this.surface.LoadDevices(DMXDeviceProvider.Instance);
-            this.surface.LoadDevices(DebugDeviceProvider.Instance);
-            this.surface.LoadDevices(LogitechDeviceProvider.Instance);
-            this.surface.LoadDevices(MsiDeviceProvider.Instance);
-            this.surface.LoadDevices(NovationDeviceProvider.Instance);
-            this.surface.LoadDevices(RazerDeviceProvider.Instance);
-            this.surface.LoadDevices(SteelSeriesDeviceProvider.Instance);
+            try {
+                //this.surface.LoadDevices(AsusDeviceProvider.Instance, throwExceptions: true);
+                //this.surface.LoadDevices(CoolerMasterDeviceProvider.Instance, throwExceptions: true);
+                this.surface.LoadDevices(CorsairDeviceProvider.Instance, throwExceptions: true);
+                //this.surface.LoadDevices(DMXDeviceProvider.Instance, throwExceptions: true);
+                //this.surface.LoadDevices(DebugDeviceProvider.Instance, throwExceptions: true);
+                //this.surface.LoadDevices(LogitechDeviceProvider.Instance, throwExceptions: true);
+                //this.surface.LoadDevices(MsiDeviceProvider.Instance, throwExceptions: true);
+                //this.surface.LoadDevices(NovationDeviceProvider.Instance, throwExceptions: true);
+                //this.surface.LoadDevices(RazerDeviceProvider.Instance, throwExceptions: true);
+                this.surface.LoadDevices(SteelSeriesDeviceProvider.Instance, throwExceptions: true);
+            }
+            catch (Exception ex) {
+                Console.WriteLine("Caught {0} exception during device loading: {1}", ex.GetType().ToString(), ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
         }
 
         public void PrintDeviceInfo() {
